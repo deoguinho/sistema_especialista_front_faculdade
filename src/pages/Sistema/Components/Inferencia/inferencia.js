@@ -14,7 +14,7 @@ function Inferencia({ abaSelecionada }) {
     const handleClickSim = (idProblema) => {
         setContadorSim((prevContadorSim) => ({
             ...prevContadorSim,
-            [idProblema]: (prevContadorSim[idProblema] || 0) + 1,
+            [idProblema]: (prevContadorSim[idProblema] || 0) + 1
         }));
         setDisaCounter(disaCounter + 1);
     };
@@ -29,12 +29,16 @@ function Inferencia({ abaSelecionada }) {
     }, []);
 
     const getIdProblemaComMaisSim = () => {
-        let idProblemaComMaisSim = "";
+        let idProblemaComMaisSim = [];
         let quantidadeDeSim = 0;
 
         Object.entries(contadorSim).forEach(([idProblema, quantidade]) => {
-            if (quantidade > quantidadeDeSim) {
-                idProblemaComMaisSim = idProblema;
+            if (quantidade >= quantidadeDeSim) {
+                if (quantidade > quantidadeDeSim) {
+                    idProblemaComMaisSim = [idProblema];
+                } else {
+                    idProblemaComMaisSim.push(idProblema);
+                }
                 quantidadeDeSim = quantidade;
             }
         });
@@ -62,25 +66,62 @@ function Inferencia({ abaSelecionada }) {
     }
 
     const getProblemaById = async (idProblema) => {
-        try {
-            const response = await axios.get(
-                `http://localhost:3000/problemas/${abaSelecionada}/${idProblema}`
-            );
-            // lastNumber number é o número do ID do projeto! Isso deve estar presente
-            // na URL do front como sendo o último argumento do link!
-            console.log(response.data);
-            Swal.fire({
-                title: `O problema relacionado foi: `,
-                text: `${response.data.problemas.nome}`,
-                showCancelButton: true
-            }).then(() => {
+        let responseHere = [];
+        let texto = "";
+        if (idProblema.length > 1) {
+            for (var i = 0; i < idProblema.length; i++) {
+                try {
+                    const response = await axios.get(
+                        `http://localhost:3000/problemas/${abaSelecionada}/${idProblema[i]}`
+                    );
+                    responseHere.push(response.data)
+                    // lastNumber number é o número do ID do projeto! Isso deve estar presente
+                    // na URL do front como sendo o último argumento do link!
+                } catch (error) {
+                    console.error(error);
+                }
+                for (var j = 0; j < responseHere.length; j++) {
+                    texto += `${responseHere[i].problemas.nome}‎ | ‎ \n`
+                }
 
-            });
-            // renderiza um modal com todas as informações
-        } catch (error) {
-            console.error(error);
+                Swal.fire({
+                    title: `O problema relacionado foi: `,
+                    text: `${texto}`,
+                    showCancelButton: true
+                }).then(() => {
+
+                });
+            }
+        } else {
+            try {
+                const response = await axios.get(
+                    `http://localhost:3000/problemas/${abaSelecionada}/${idProblema}`
+                );
+                // lastNumber number é o número do ID do projeto! Isso deve estar presente
+                // na URL do front como sendo o último argumento do link!
+                Swal.fire({
+                    title: `O problema relacionado foi: `,
+                    text: `${response.data.problemas.nome}`,
+                    showCancelButton: true
+                }).then(() => {
+
+                });
+                // renderiza um modal com todas as informações
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
+
+    const rederSwal = (text) => {
+        Swal.fire({
+            title: `O problema relacionado foi: `,
+            text: `${text}`,
+            showCancelButton: true
+        }).then(() => {
+
+        });
+    }
 
     const renderRelacoes = () => {
         return relacoes.map((relacao, index) => (
