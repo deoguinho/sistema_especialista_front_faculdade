@@ -1,0 +1,30 @@
+.associar{
+    height: 800px;
+    overflow-y: scroll;
+}
+
+.associar h3{
+    color: #4d8076;
+    margin-bottom: 5px;
+}
+
+.box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: solid 1px #dce9e6;
+    padding: 15px;
+}
+
+.box select{
+    width: 50%;
+    padding: 7px;
+    border-radius: 10px;
+    border: solid 1px #9dd7cc;
+    margin-top: 1rem;
+}
+
+.box button{
+    height: 3rem;
+}

@@ -1,0 +1,45 @@
+.inferencia {
+    height: 800px;
+    overflow-y: scroll;
+
+}
+
+.boxInfe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: solid 1px #dce9e6;
+    padding: 15px;
+}
+
+.boxInfe button {
+    border: solid 1px #dce9e6;
+    background-color: #fff;
+    color: #000;
+}
+
+.boxInfe[disabled] {
+    background: #d8c0c0;
+    pointer-events: none;
+    opacity: 0.7;
+
+}
+
+.boxInfe button{
+    height: 4rem;
+    margin: 1rem;
+}
+
+.boxInfe button:hover {
+    background: #4d8076;
+    color: #fff;
+}
+
+.justifica{
+    width: 18rem;
+}
+
+.boxInfe h3:first-letter{
+    text-transform: capitalize;
+}
